@@ -48,18 +48,21 @@ document.addEventListener("click", function (e) {
 });
 (function () {
 	var root = document.documentElement;
-	var isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-	if (!window.Lenis || !isTouchDevice) {
+	var isTouchDevice =
+		window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+	if (isTouchDevice) {
+		root.style.scrollBehavior = "auto";
+		return;
+	}
+	if (!window.Lenis) {
 		root.style.scrollBehavior = "smooth";
 		return;
 	}
 	var lenis = new Lenis({
 		duration: 1.6,
-		smoothWheel: false,
-		syncTouch: true,
-		touchMultiplier: 1.8,
-		wheelMultiplier: 0.9,
-		gestureOrientation: "vertical",
+		smoothWheel: true,
+		touchMultiplier: 1.5,
+		wheelMultiplier: 1,
 	});
 	function raf(t) {
 		lenis.raf(t);
